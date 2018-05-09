@@ -8,21 +8,21 @@ describe Oystercard do
   end
 
   describe("card balance") do
+    before(:each) do
+      subject.top_up(Oystercard::TOPUP_LIMIT)
+    end
+
     it("adds money to the card") do
-      subject.top_up(5)
-      expect(subject.balance).to eq(5)
+      expect(subject.balance).to eq(90)
     end
 
     it("throws error message if balance exceeds limit") do
-      topup_limit = Oystercard::TOPUP_LIMIT
-      subject.top_up(topup_limit)
-      expect { subject.top_up(5) }.to raise_error("Top up limit of #{topup_limit} reached")
+      expect { subject.top_up(5) }.to raise_error("Top up limit of #{Oystercard::TOPUP_LIMIT} reached")
     end
 
     it("deducts balance of the card") do
-      subject.top_up(50)
       subject.deduct(5)
-      expect(subject.balance).to eq(45)
+      expect(subject.balance).to eq(85)
     end
   end
 
