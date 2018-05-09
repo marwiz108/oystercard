@@ -10,16 +10,8 @@ class Oystercard
   end
 
   def top_up(amount)
-    #raise "Top up limit of #{TOPUP_LIMIT} reached" if @balance + amount > TOPUP_LIMIT
-    if @balance + amount > TOPUP_LIMIT
-      raise "Top up limit of #{TOPUP_LIMIT} reached"
-    else
-      @balance += amount
-    end
-  end
-
-  def deduct(amount)
-    @balance -= amount
+    raise "Top up limit of #{TOPUP_LIMIT} reached" if @balance + amount > TOPUP_LIMIT
+    @balance += amount
   end
 
   def in_journey?
@@ -33,6 +25,11 @@ class Oystercard
 
   def touch_out
     @on = false
+    deduct(MINIMUM_FARE)
   end
 
+  private
+  def deduct(amount)
+    @balance -= amount
+  end
 end
