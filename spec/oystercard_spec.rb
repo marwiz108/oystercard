@@ -27,6 +27,10 @@ describe Oystercard do
   end
 
   describe("journey") do
+    before(:each) do
+      subject.top_up(Oystercard::TOPUP_LIMIT)
+    end
+
     it("starts not in journey") do
       expect(subject).not_to be_in_journey
     end
@@ -41,5 +45,9 @@ describe Oystercard do
       subject.touch_out
       expect(subject).not_to be_in_journey
     end
+  end
+
+  it("does not touch in if balance is below minimum") do
+    expect { subject.touch_in }.to raise_error("Insufficient balance")
   end
 end
